@@ -35,32 +35,44 @@ static void SingleOrDefault(AppDbContext dbContext)
 {
     // TODO : Select using SingleOrDefault by Product Id   
     var product = dbContext.Products.AsNoTracking().SingleOrDefault(product => product.Id== 2);
-    Console.WriteLine($"SingleOrDefault - Product: {product!.Name}");
+    if (product != null)
+    {
+        Console.WriteLine($"SingleOrDefault - Product: {product.Name}");
+    }
 }
 
 static void LoadingRelatedData_Manual(AppDbContext dbContext)
 {
     // TODO : Load Product with related shop data manually
     var product = dbContext.Products.AsNoTracking().FirstOrDefault(product => product.Id == 3);
-    product!.Shop = dbContext.Shops.Single(shop => shop.Id == product.ShopId);
-    Console.WriteLine($"LoadingRelatedData_Manual - Product's Shop: {product!.Shop.Name}");
+    if(product != null)
+    {
+        product.Shop = dbContext.Shops.Single(shop => shop.Id == product.ShopId);
+        Console.WriteLine($"LoadingRelatedData_Manual - Product's Shop: {product.Shop.Name}");
+    }
 }
 
 static void LoadingRelatedData_ExplicitLoading(AppDbContext dbContext)
 {
     // TODO : Load Product with related shop data explicitly
     var product = dbContext.Products.SingleOrDefault(product => product.Id == 4);
-    dbContext.Entry(product!)
+    if (product != null)
+    {
+        dbContext.Entry(product)
         .Reference(product => product.Shop)
         .Load();
-    Console.WriteLine($"LoadingRelatedData_ExplicitLoading - Product's Shop: {product!.Shop.Name}");
+        Console.WriteLine($"LoadingRelatedData_ExplicitLoading - Product's Shop: {product.Shop.Name}");
+    }
 }
 
 static void LoadingRelatedData_EagerLoading(AppDbContext dbContext)
 {
     // TODO : Load Product with related Shop data eagerly    
     var product = dbContext.Products.AsNoTracking().Include(product => product.Shop).SingleOrDefault(product => product.Id == 5);
-    Console.WriteLine($"LoadingRelatedData_EagerLoading - Product's Shop: {product!.Shop.Name}");
+    if (product != null)
+    {
+        Console.WriteLine($"LoadingRelatedData_EagerLoading - Product's Shop: {product.Shop.Name}");
+    }
 }
 
 
