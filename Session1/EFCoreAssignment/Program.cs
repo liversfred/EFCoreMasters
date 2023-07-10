@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using EFCoreAssignment;
+using EFCoreAssignment.Entities;
 using Microsoft.EntityFrameworkCore;
 
 Console.WriteLine("Hello, World!");
@@ -77,3 +78,83 @@ static void LoadingRelatedData_EagerLoading(AppDbContext dbContext)
 
 
 Console.WriteLine("EF Core is the best");
+
+
+/* Session 2 Assignment */
+Console.WriteLine("\n\nSession 2 Assignment\n");
+
+InsertProduct(dbContext);
+InsertProductWithNewShop(dbContext);
+UpdateProduct(dbContext);
+DeleteProduct(dbContext);
+DeleteProductByKey(dbContext);
+
+static void InsertProduct(AppDbContext dbContext)
+{
+    // TODO: Insert a new Product
+    var product = new Product
+    {
+        Name = "Products F",
+        ShopId = 3
+    };
+
+    dbContext.Add(product);
+    dbContext.SaveChanges();
+
+    Console.WriteLine($"InsertProduct - {product.Name} has been added with ShopId {product.ShopId}.");
+}
+
+static void InsertProductWithNewShop(AppDbContext dbContext)
+{
+    // TODO: Insert a new Product with a new Shop
+    var product = new Product
+    {
+        Name = "Products G",
+        Shop = new Shop(){ Name = "Shop D" }
+    };
+
+    dbContext.Add(product);
+    dbContext.SaveChanges();
+
+    Console.WriteLine($"InsertProductWithNewShop - {product.Name} has been added with Shop Name {product.Shop.Name}.");
+}
+
+static void UpdateProduct(AppDbContext dbContext)
+{
+    // TODO: Update a Product
+    var latestProduct = dbContext.Products.OrderByDescending(p => p.Id).FirstOrDefault();
+    if(latestProduct != null)
+    {
+        latestProduct.Name = $"{latestProduct.Name} - Updated Name";
+
+        dbContext.SaveChanges();
+
+        Console.WriteLine($"UpdateProduct - Latest Product has been updated with the new name ({latestProduct.Name}).");
+    }
+}
+
+static void DeleteProduct(AppDbContext dbContext)
+{
+    // TODO: Delete a Product
+    var product = dbContext.Products.OrderByDescending(p => p.Id).Skip(2).FirstOrDefault();   // Skip 2 to keep the first 2 requirements
+    if (product != null)
+    {
+        dbContext.Remove(product);
+        dbContext.SaveChanges();
+
+        Console.WriteLine($"DeleteProduct - {product.Name} has been hard deleted.");
+    }
+}
+
+static void DeleteProductByKey(AppDbContext dbContext)
+{
+    // TODO: Delete a Product with just having a key
+    var productId = 1;
+
+    var product = new Product { Id = productId };
+
+    dbContext.Remove(product);
+    dbContext.SaveChanges();
+
+    Console.WriteLine($"DeleteProductByKey - Product with Id: {productId}, has been hard deleted.");
+}
