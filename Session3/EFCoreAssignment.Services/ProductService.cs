@@ -48,6 +48,7 @@ namespace EFCoreAssignment.Data.Services
 
             product.Name = productForUpdate.Name;
             product.ShopId = productForUpdate.ShopId;
+
             await _dbContext.SaveChangesAsync();
         }
 
