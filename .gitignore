@@ -1,0 +1,17 @@
+# Visual Studio 2022 cache/options directory
+.vs/
+Session1/.vs/
+Session3/.vs/
+
+# Session 1 and 2 build files
+Session1/EFCoreAssignment/bin/
+Session1/EFCoreAssignment/obj/
+
+
+# Session 3 build files
+Session3/EFCoreAssignment.API/bin/
+Session3/EFCoreAssignment.API/obj/
+Session3/EFCoreAssignment.Data/bin/
+Session3/EFCoreAssignment.Data/obj/
+Session3/EFCoreAssignment.Services/bin/
+Session3/EFCoreAssignment.Services/obj/
