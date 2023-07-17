@@ -21,9 +21,7 @@ namespace EFCoreAssignment.Data.Services
         public async Task<ProductDto> GetProduct(int id)
         {
             // TODO get product
-            var product = await _dbContext.Products.FirstOrDefaultAsync(x => x.Id == id) 
-                    ?? throw new NullReferenceException($"Product with id = {id} not found.");
-
+            var product = await _dbContext.Products.SingleAsync(x => x.Id == id);
             return new ProductDto(product.Id, product.Name, product.ShopId);
         }
 
@@ -43,9 +41,7 @@ namespace EFCoreAssignment.Data.Services
         public async Task UpdateProduct(UpdateProductDto productForUpdate)
         {
             //TODO update a product
-            var product = await _dbContext.Products.SingleOrDefaultAsync(x => x.Id == productForUpdate.Id) 
-                ?? throw new NullReferenceException($"Product with id = {productForUpdate.Id} not found.");
-
+            var product = await _dbContext.Products.SingleAsync(x => x.Id == productForUpdate.Id);
             product.Name = productForUpdate.Name;
             product.ShopId = productForUpdate.ShopId;
 
@@ -55,11 +51,16 @@ namespace EFCoreAssignment.Data.Services
         public async Task DeleteProduct(int id)
         {
             //TODO delete a product
-            var product = await _dbContext.Products.SingleOrDefaultAsync(x => x.Id == id) 
-                ?? throw new NullReferenceException($"Product with id = {id} not found.");
+            var product = await _dbContext.Products.SingleAsync(x => x.Id == id);
 
             _dbContext.Remove(product);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsProductExisting(int id)
+        {
+            var product = await _dbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
+            return product != null;
         }
     }
 
@@ -70,6 +71,7 @@ namespace EFCoreAssignment.Data.Services
         Task<int> CreateProduct(CreateProductDto productForCreation);
         Task UpdateProduct(UpdateProductDto productForUpdate);
         Task DeleteProduct(int id);
+        Task<bool> IsProductExisting(int id);
     }
 
     public record ProductDto(int Id, string Name, int ShopId);

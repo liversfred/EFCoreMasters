@@ -23,8 +23,9 @@ namespace EFCoreAssignment.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct(int id)
         {
-            var result = await _service.GetProduct(id);
-            return Ok(result);
+            if(!await _service.IsProductExisting(id)) return NotFound($"Product with id = {id} not found.");
+
+            return Ok(await _service.GetProduct(id));
         }
 
         [HttpPost]
@@ -37,14 +38,20 @@ namespace EFCoreAssignment.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductApiModel vm)
         {
+            if (!await _service.IsProductExisting(vm.Id)) return NotFound($"Product with id = {vm.Id} not found.");
+
             await _service.UpdateProduct(new UpdateProductDto(vm.Id, vm.Name, vm.ShopId));
+
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
+            if (!await _service.IsProductExisting(id)) return NotFound($"Product with id = {id} not found.");
+
             await _service.DeleteProduct(id);
+
             return Ok();
         }
     }
