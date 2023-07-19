@@ -2,6 +2,7 @@
 .vs/
 Session1/.vs/
 Session3/.vs/
+Session4/.vs/
 
 # Session 1 and 2 build files
 Session1/EFCoreAssignment/bin/
@@ -15,3 +16,9 @@ Session3/EFCoreAssignment.Data/bin/
 Session3/EFCoreAssignment.Data/obj/
 Session3/EFCoreAssignment.Services/bin/
 Session3/EFCoreAssignment.Services/obj/
+
+# Session 4 build files
+Session4/InventoryAppEFCore.API/bin/
+Session4/InventoryAppEFCore.API/obj/
+Session4/InventoryAppEFCore.DataLayer/bin/
+Session4/InventoryAppEFCore.DataLayer/obj/
