@@ -9,6 +9,10 @@ namespace InventoryAppEFCore.DataLayer.Configs
         public void Configure(EntityTypeBuilder<LineItem> builder)
         {
             builder.HasKey(x => x.LineItemId);
+
+            builder.HasOne<Order>()
+                .WithMany(x => x.LineItems)
+                .HasForeignKey(x => x.OrderId);
         }
     }
 }

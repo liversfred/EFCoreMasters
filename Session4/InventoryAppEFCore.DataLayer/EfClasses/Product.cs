@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InventoryAppEFCore.DataLayer.EfClasses
 {
@@ -30,7 +31,7 @@ namespace InventoryAppEFCore.DataLayer.EfClasses
         public ICollection<Review> Reviews { get; set; }
         public ICollection<Tag> Tags { get; set; }
 
-        public ICollection<Supplier> SuppliersLink { get; set; }
+        public ICollection<ProductSupplier> SuppliersLink { get; set; }
 
         public bool IsDeleted { get; set; }
     }

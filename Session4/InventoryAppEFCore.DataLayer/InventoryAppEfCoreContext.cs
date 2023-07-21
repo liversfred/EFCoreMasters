@@ -30,6 +30,7 @@ namespace InventoryAppEFCore.DataLayer
             modelBuilder.ApplyConfiguration(new ProductConfig());
             modelBuilder.ApplyConfiguration(new ReviewConfig());
             modelBuilder.ApplyConfiguration(new SupplierConfig());
+            modelBuilder.ApplyConfiguration(new ProductSupplierConfig());
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace InventoryAppEFCore.DataLayer.EfClasses
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace InventoryAppEFCore.DataLayer.EfClasses
 {
     public class PriceOffer
     {
@@ -8,6 +10,7 @@
         public string PromotinalText { get; set; }
 
         //relationship---
+        [ForeignKey(nameof(Product))]
         public int ProductId { get; set; }
     }
 }

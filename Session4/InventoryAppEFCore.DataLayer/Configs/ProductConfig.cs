@@ -13,6 +13,9 @@ namespace InventoryAppEFCore.DataLayer.Configs
             builder.Property(x => x.Name)
                 .HasMaxLength(50)
                 .IsRequired();
+
+            builder.HasMany(x => x.Tags)
+                .WithMany(x => x.Products);
         }
     }
 }
