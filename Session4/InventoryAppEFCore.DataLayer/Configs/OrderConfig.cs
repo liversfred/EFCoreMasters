@@ -11,6 +11,11 @@ namespace InventoryAppEFCore.DataLayer.Configs
             builder.HasKey(x => x.OrderId);
 
             builder.Property(x => x.Status).HasConversion(x => x.ToString(), x => (OrderStatus)Enum.Parse(typeof(OrderStatus), x));
+
+            builder.HasOne<Client>()
+                .WithOne(x => x.Order)
+                .HasForeignKey<Order>(x => x.ClientId)
+                .IsRequired();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace InventoryAppEFCore.DataLayer.EfClasses
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace InventoryAppEFCore.DataLayer.EfClasses
 {
     public class Review
     {
@@ -8,6 +10,7 @@
         public string Comment { get; set; }
         public int NumStars { get; set; }
 
+        [ForeignKey(nameof(Product))]
         public int ProductId { get; set; }
     }
 }

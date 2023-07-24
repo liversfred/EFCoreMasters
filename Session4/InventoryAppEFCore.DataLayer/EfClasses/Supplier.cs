@@ -15,6 +15,6 @@ namespace InventoryAppEFCore.DataLayer.EfClasses
         public ExcludeClass ExcludedClass { get; set; }
 
         //Relationships
-        public ICollection<Product> ProductsLink { get; set; }
+        public ICollection<ProductSupplier> ProductsLink { get; set; }
     }
 }
