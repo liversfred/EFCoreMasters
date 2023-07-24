@@ -69,7 +69,7 @@ namespace InventoryAppEFCore.DataLayer.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("LineItem");
+                    b.ToTable("LineItems");
                 });
 
             modelBuilder.Entity("InventoryAppEFCore.DataLayer.EfClasses.Order", b =>
@@ -216,8 +216,11 @@ namespace InventoryAppEFCore.DataLayer.Migrations
 
             modelBuilder.Entity("InventoryAppEFCore.DataLayer.EfClasses.Tag", b =>
                 {
-                    b.Property<string>("TagId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("TagId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TagId"), 1L, 1);
 
                     b.HasKey("TagId");
 
@@ -229,8 +232,8 @@ namespace InventoryAppEFCore.DataLayer.Migrations
                     b.Property<int>("ProductsProductId")
                         .HasColumnType("int");
 
-                    b.Property<string>("TagsTagId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("TagsTagId")
+                        .HasColumnType("int");
 
                     b.HasKey("ProductsProductId", "TagsTagId");
 

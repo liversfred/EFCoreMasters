@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace InventoryAppEFCore.DataLayer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,7 +55,8 @@ namespace InventoryAppEFCore.DataLayer.Migrations
                 name: "Tags",
                 columns: table => new
                 {
-                    TagId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    TagId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {
@@ -156,7 +157,7 @@ namespace InventoryAppEFCore.DataLayer.Migrations
                 columns: table => new
                 {
                     ProductsProductId = table.Column<int>(type: "int", nullable: false),
-                    TagsTagId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    TagsTagId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -176,7 +177,7 @@ namespace InventoryAppEFCore.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LineItem",
+                name: "LineItems",
                 columns: table => new
                 {
                     LineItemId = table.Column<int>(type: "int", nullable: false)
@@ -188,15 +189,15 @@ namespace InventoryAppEFCore.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LineItem", x => x.LineItemId);
+                    table.PrimaryKey("PK_LineItems", x => x.LineItemId);
                     table.ForeignKey(
-                        name: "FK_LineItem_Orders_OrderId",
+                        name: "FK_LineItems_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "OrderId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_LineItem_Products_ProductId",
+                        name: "FK_LineItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "ProductId",
@@ -204,13 +205,13 @@ namespace InventoryAppEFCore.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_LineItem_OrderId",
-                table: "LineItem",
+                name: "IX_LineItems_OrderId",
+                table: "LineItems",
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LineItem_ProductId",
-                table: "LineItem",
+                name: "IX_LineItems_ProductId",
+                table: "LineItems",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
@@ -244,7 +245,7 @@ namespace InventoryAppEFCore.DataLayer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "LineItem");
+                name: "LineItems");
 
             migrationBuilder.DropTable(
                 name: "PriceOffers");

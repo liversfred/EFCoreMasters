@@ -16,6 +16,8 @@ namespace InventoryAppEFCore.DataLayer.Configs
 
             builder.HasMany(x => x.Tags)
                 .WithMany(x => x.Products);
+
+            builder.HasQueryFilter(x => !x.IsDeleted);
         }
     }
 }
