@@ -11,6 +11,8 @@ namespace InventoryAppEFCore.DataLayer.Configs
             builder.Property(x => x.Name)
                 .HasMaxLength(50)
                 .IsRequired();
+
+            builder.HasQueryFilter(x => !x.IsDeleted);
         }
     }
 }
