@@ -13,6 +13,9 @@ namespace InventoryAppEFCore.DataLayer.Configs
                 .IsRequired();
 
             builder.HasQueryFilter(x => !x.IsDeleted);
+
+            builder.Property(x => x.IsDeleted)
+                .HasDefaultValue(false);
         }
     }
 }

@@ -21,6 +21,7 @@ builder.Services.AddTransient<InventoryAppEfCoreContextInitializer, InventoryApp
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ILineItemService, LineItemService>();
+builder.Services.AddScoped<IPriceOfferService, PriceOfferService>();
 
 var app = builder.Build();
 
@@ -36,7 +37,7 @@ if (app.Environment.IsDevelopment())
         var dbContextInitialiser = services.GetRequiredService<InventoryAppEfCoreContextInitializer>();
 
         await dbContextInitialiser.InitialiseAsync();
-        await dbContextInitialiser.SeedAsync();
+        //await dbContextInitialiser.SeedAsync();
     }
 }
 
