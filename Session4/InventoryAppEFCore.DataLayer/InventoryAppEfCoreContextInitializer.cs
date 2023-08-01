@@ -1,4 +1,5 @@
 ﻿using InventoryAppEFCore.DataLayer.EfClasses;
+using InventoryAppEFCore.DataLayer.UDF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -52,6 +53,12 @@ namespace InventoryAppEFCore.DataLayer
 #pragma warning restore CA1848 // Use the LoggerMessage delegates
                 throw;
             }
+        }
+
+        public void InitializeUDF()
+        {
+            this.CreateScalarUdfForDiscountedPrice();
+            this.CreateTableValuedUDFForLineItems();
         }
 
         private async Task SeedClientsTable()
@@ -271,6 +278,40 @@ namespace InventoryAppEFCore.DataLayer
 
                 await this.context.SaveChangesAsync();
             }
+        }
+
+        private void CreateScalarUdfForDiscountedPrice()
+        {
+            var udfMethodName = nameof(UDFMethods.DiscountedPrice);
+
+            this.context.Database.ExecuteSqlRaw(
+                $"CREATE OR ALTER FUNCTION {udfMethodName} (@lineItemId int)" +
+                @"  RETURNS float
+                    AS
+                    BEGIN
+                        DECLARE @result as float
+
+                        SELECT @result = ((NumOfProducts * ProductPrice) * (DiscountPercentage / 100))
+                        FROM [dbo].[LineItems]
+                        WHERE LineItemId = @lineItemId
+                    RETURN @result
+                    END");
+        }
+
+        private void CreateTableValuedUDFForLineItems()
+        {
+            var udfMethodName = "GetLineItemsByProductId";
+
+            this.context.Database.ExecuteSqlRaw(
+                    $"CREATE OR ALTER FUNCTION {udfMethodName} ( @productId INT )" +
+                    @" RETURNS TABLE 
+                       AS
+                       RETURN 
+                       (
+	                        SELECT p.Name AS ProductName, NumOfProducts, ProductPrice, DiscountPercentage, dbo.DiscountedPrice(li.LineItemId) AS DiscountedPrice, DiscountedTotalPrice
+                            FROM dbo.LineItems li
+                            INNER JOIN dbo.Products p on p.ProductId = @productId AND p.ProductId = li.ProductId
+                       )");
         }
     }
 }
