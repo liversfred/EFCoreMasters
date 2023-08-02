@@ -14,6 +14,7 @@ namespace InventoryAppEFCore.DataLayer.Configs
 
             builder.HasQueryFilter(x => !x.IsDeleted);
 
+            // For HasDefaultValue 
             builder.Property(x => x.IsDeleted)
                 .HasDefaultValue(false);
         }

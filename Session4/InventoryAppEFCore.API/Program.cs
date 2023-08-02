@@ -38,6 +38,7 @@ if (app.Environment.IsDevelopment())
 
         await dbContextInitialiser.InitialiseAsync();
         //await dbContextInitialiser.SeedAsync();
+        dbContextInitialiser.InitializeUDF();
     }
 }
 

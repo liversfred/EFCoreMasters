@@ -20,5 +20,12 @@ namespace InventoryAppEFCore.API.Controllers
             var result = await _service.GetLineItems();
             return Ok(result);
         }
+
+        [HttpGet("{productId}")]
+        public IActionResult GetLineItemsByProductId(int productId)
+        {
+            var result = _service.GetLineItemsByProductId(productId);
+            return Ok(result);
+        }
     }
 }

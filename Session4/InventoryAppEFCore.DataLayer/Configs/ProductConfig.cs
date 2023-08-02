@@ -14,9 +14,13 @@ namespace InventoryAppEFCore.DataLayer.Configs
                 .HasMaxLength(50)
                 .IsRequired();
 
+            builder.Property(x => x.CreatedDate)
+                .HasDefaultValueSql("GetUTCDate()");
+
             builder.HasMany(x => x.Tags)
                 .WithMany(x => x.Products);
 
+            // For HasDefaultValue
             builder.Property(x => x.IsDeleted)
                 .HasDefaultValue(false);
 

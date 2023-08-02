@@ -1,6 +1,8 @@
 ﻿using InventoryAppEFCore.DataLayer.Configs;
 using InventoryAppEFCore.DataLayer.EfClasses;
+using InventoryAppEFCore.DataLayer.EfClasses.TableFunctions;
 using InventoryAppEFCore.DataLayer.EfClasses.Views;
+using InventoryAppEFCore.DataLayer.UDF;
 using Microsoft.EntityFrameworkCore;
 
 namespace InventoryAppEFCore.DataLayer
@@ -26,6 +28,13 @@ namespace InventoryAppEFCore.DataLayer
         // Views
         public DbSet<PriceOfferView> PriceOfferView { get; set; }
 
+        // UDF
+        [DbFunction]
+        public IQueryable<LineItemTableFunction> GetLineItemsByProductId(int productId)
+        {
+            return FromExpression(() => GetLineItemsByProductId(productId));
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //TO DO Fluent API
@@ -37,9 +46,14 @@ namespace InventoryAppEFCore.DataLayer
             modelBuilder.ApplyConfiguration(new ReviewConfig());
             modelBuilder.ApplyConfiguration(new SupplierConfig());
             modelBuilder.ApplyConfiguration(new ProductSupplierConfig());
-            
+
             // View config
             modelBuilder.Entity<PriceOfferView>().ToView("PriceOfferView").HasNoKey();
+
+            // UDF
+            modelBuilder.Entity<LineItemTableFunction>().HasNoKey();
+            modelBuilder.HasDbFunction(() => UDFMethods.DiscountedPrice(default)).HasSchema("dbo");
+            modelBuilder.HasDbFunction(() => GetLineItemsByProductId(default)).HasSchema("dbo");
 
             // Seed Data
             modelBuilder.Entity<Client>().HasData(
@@ -75,9 +89,9 @@ namespace InventoryAppEFCore.DataLayer
                 new { ProductId = 2, SupplierId = 2, Order = (byte)2 },
                 new { ProductId = 3, SupplierId = 3, Order = (byte)3 });
             modelBuilder.Entity<LineItem>().HasData(
-                new { LineItemId = 1, NumOfProducts = (short)3, ProductPrice = 100M, OrderId = 1, ProductId = 1 },
-                new { LineItemId = 2, NumOfProducts = (short)2, ProductPrice = 200M, OrderId = 2, ProductId = 2 },
-                new { LineItemId = 3, NumOfProducts = (short)1, ProductPrice = 300M, OrderId = 3, ProductId = 3 });
+                new { LineItemId = 1, NumOfProducts = (short)3, ProductPrice = 100M, OrderId = 1, DiscountPercentage = 10M, ProductId = 1 },
+                new { LineItemId = 2, NumOfProducts = (short)2, ProductPrice = 200M, OrderId = 2, DiscountPercentage = 10M, ProductId = 2 },
+                new { LineItemId = 3, NumOfProducts = (short)1, ProductPrice = 300M, OrderId = 3, DiscountPercentage = 10M, ProductId = 3 });
         }
     }
 }

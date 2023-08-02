@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InventoryAppEFCore.DataLayer.EfClasses
 {
@@ -11,6 +10,8 @@ namespace InventoryAppEFCore.DataLayer.EfClasses
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
+
+        public DateTime CreatedDate { get; set; }
 
         // Backing Field
         private string _productUrl;
