@@ -24,3 +24,17 @@ Session4/InventoryAppEFCore.DataLayer/bin/
 Session4/InventoryAppEFCore.DataLayer/obj/
 Session4/InventoryAppEFCore.Services/bin/
 Session4/InventoryAppEFCore.Services/obj/
+
+# Session 10 build files
+Session10/ExpenseTracker.API/bin/
+Session10/ExpenseTracker.API/obj/
+Session10/ExpenseTracker.Application/bin/
+Session10/ExpenseTracker.Application/obj/
+Session10/ExpenseTracker.Data/bin/
+Session10/ExpenseTracker.Data/obj/
+Session10/ExpenseTracker.Domain/bin/
+Session10/ExpenseTracker.Domain/obj/
+Session10/ExpenseTracker.Infrastructure/bin/
+Session10/ExpenseTracker.Infrastructure/obj/
+Session10/ExpenseTracker.Tests/bin/
+Session10/ExpenseTracker.Tests/obj/
