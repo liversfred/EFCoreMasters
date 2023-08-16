@@ -12,12 +12,17 @@ namespace ExpenseTracker.Data
     public class ExpenseTrackerDBContext : DbContext
     {
         //TODO: Setup DBContext for unit testing
+        private DbContextOptions<ExpenseTrackerDBContext> _options;
+
         public ExpenseTrackerDBContext()
         {
 
         }
 
-        public ExpenseTrackerDBContext(DbContextOptions<ExpenseTrackerDBContext> options) : base(options) { }
+        public ExpenseTrackerDBContext(DbContextOptions<ExpenseTrackerDBContext> options) : base(options)
+        {
+            _options = options;
+        }
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Expense> Expenses { get; set; }

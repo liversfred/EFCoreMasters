@@ -3,11 +3,6 @@ using ExpenseTracker.Domain.Entities;
 using ExpenseTracker.Infrastructure.Services;
 using ExpenseTracker.Tests.Helper;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExpenseTracker.Tests.Tests
 {
@@ -32,16 +27,19 @@ namespace ExpenseTracker.Tests.Tests
         public void GetAllCategories_ShouldReturnAllCategories()
         {
             //Arrange
-            //1
-            //2
+            var dbContextOptions = DBContextOptionsGenerator.CreateUniqueClassOptions<ExpenseTrackerDBContext>(_className);
+            using var context = new ExpenseTrackerDBContext(dbContextOptions);
+            context.InitializeDBWithData();
 
+            var service = new CategoryService(context);
+            var expected = ExpenseTrackerTestData.ExpenseData().Select(x => x.Category).ToList();
 
             //Act
-            //3
-            //3
+            var categories = service.GetAll();
 
             //Assert
-            //4 Assert that there should be categories retrieved 
+            categories.Should().NotBeNull();
+            categories.Should().HaveCount(expected.Count);
         }
 
 
@@ -49,48 +47,70 @@ namespace ExpenseTracker.Tests.Tests
         public void GetSingleCategory_ShouldReturnRequested()
         {
             //Arrange
-            //1
-            //2
+            var dbContextOptions = DBContextOptionsGenerator.CreateUniqueClassOptions<ExpenseTrackerDBContext>(_className);
+            using var context = new ExpenseTrackerDBContext(dbContextOptions);
+            context.InitializeDBWithData();
+
+            int categoryId = 2;
+
+            var service = new CategoryService(context);
+            var expected = ExpenseTrackerTestData.ExpenseData().Last();
 
             //Act
-            //3
-            //3
+            var category = service.GetSingle(categoryId);
 
             //Assert
-            //4 Assert that category returned is the one requested
+            category.Should().NotBeNull();
+            category.Name.Should().BeEquivalentTo(expected.Category.Name);
+            category.Description.Should().BeEquivalentTo(expected.Category.Description);
         }
 
         [Fact]
         public void AddCategory_ShouldSuccessfullyAddCategory()
         {
             //Arrange
-            //1
-            //2
+            var dbContextOptions = DBContextOptionsGenerator.CreateUniqueClassOptions<ExpenseTrackerDBContext>(_className);
+            using var context = new ExpenseTrackerDBContext(dbContextOptions);
+            context.InitializeDBWithData();
 
+            int categoryId = 3;
+            var newCategory = new Category
+            {
+                Name = $"Category{categoryId}",
+                Description = $"Category{categoryId}",
+            };
+
+            var service = new CategoryService(context);
 
             //Act
-            //3
-            //3
-            
+            var category = service.Add(newCategory);
+            context.ChangeTracker.Clear();
 
             //Assert
-            //4 Assert that category was added
+            category.Should().NotBeNull();
+            category.CategoryId.Should().Be(categoryId);
+            category.Name.Should().BeEquivalentTo(newCategory.Name);
+            category.Description.Should().BeEquivalentTo(newCategory.Description);
         }
 
         [Fact]
         public void DeleteCategory_ShouldSuccessfullyDeleteCategory()
         {
             //Arrange
-            //1
-            //2
+            var dbContextOptions = DBContextOptionsGenerator.CreateUniqueClassOptions<ExpenseTrackerDBContext>(_className);
+            using var context = new ExpenseTrackerDBContext(dbContextOptions);
+            context.InitializeDBWithData();
 
+            var categoryToBeDeleted = new Category() { CategoryId = 2 };
+
+            var service = new CategoryService(context);
 
             //Act
-            //3
-            //3
+            service.Delete(categoryToBeDeleted);
 
             //Assert
-            //4 Assert that category was deleted
+            var deletedCategory = context.Categories.SingleOrDefault(x => x.CategoryId == categoryToBeDeleted.CategoryId);
+            deletedCategory.Should().BeNull();
         }
     }
 }
